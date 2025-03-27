@@ -13,15 +13,20 @@ def unit_test():
     
     # Test selling products
     result = sell_product('apple', 10)
-    # assert result is None, f"Expected None but got {result}"  # No error should occur
-    # assert check_availability('apple') == 40, "Apple stock should be 40 after selling 10."
+    assert result is None, f"Expected None but got {result}"  # No error should occur
+    assert check_availability('apple') == 40, "Apple stock should be 40 after selling 10."
 
     # Test insufficient stock. Trying to sell more than available - if you sell more than 20, this SHOULD NOT present an error.
     result = sell_product('banana', 200)  # Selling 200 should not raise an error - if it does, the sell_product function needs fixing.
-    # assert result == "Insufficient stock", f"Expected 'Insufficient stock' but got {result}."
+    assert result == "Insufficient stock", f"Expected 'Insufficient stock' but got {result}."
 
     # TODO: Test selling a non-existent product (e.g., 'grape') and check behavior.
+    result = sell_product('grape', 100)
+    assert result == "Insufficient stock", f"Expected 'Insufficient stock' but got {result}."
+    
+    print(result)
     # For example, it should return "Insufficient stock" or similar.
+
 
 # -------------------------------------------
 # Integration Testing
@@ -40,11 +45,13 @@ def integration_test():
     # Check stock after selling
     apple_stock = check_availability('apple')
     banana_stock = check_availability('banana')
+    mango_stock = check_availability('mango')
 
     # Print results for verification
     print("\n----- Integration Test Results -----")
     print(f"Apple stock after sale: {apple_stock} (Expected: 40)")  # 50 - 10
     print(f"Banana stock after sale: {banana_stock} (Expected: 25)")  # 30 - 5
+    print(f"Mango stock after sale: {mango_stock} (Expected: 0)")
 
     # TODO: Test checking availability of a non-existent product (e.g., 'mango', should return 0).
     
@@ -62,15 +69,18 @@ def system_test():
     add_product('banana', 30)
     sell_product('apple', 10)
     sell_product('banana', 5)
+    sell_product('mango', 0)
 
     # Check final availability and inventory value
     apple_stock = check_availability('apple')
     banana_stock = check_availability('banana')
+    mango_stock = check_availability('mango')
     inventory_value = total_inventory_value()
 
     print("\n----- System Test Results -----")
     print(f"Apple stock: {apple_stock} (Expected: 40)")  # 50 - 10
     print(f"Banana stock: {banana_stock} (Expected: 25)")  # 30 - 5
+    print(f"Mango stock: {mango_stock} (Expected: 0)")
     print(f"Total inventory value: {inventory_value} (Expected: 70)")  # (40 * 1.0) + (25 * 0.5)
     
     # TODO: Add tests for boundary conditions such as no stock or empty inventory.
@@ -84,8 +94,8 @@ if __name__ == "__main__":
     print("Running Unit Test...")
     unit_test()
 
-    # print("\nRunning Integration Test...")
-    # integration_test()
+    print("\nRunning Integration Test...")
+    integration_test()
 
-    # print("\nRunning System Test...")
-    # system_test()
+    print("\nRunning System Test...")
+    system_test()
